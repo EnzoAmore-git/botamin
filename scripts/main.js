@@ -43,14 +43,15 @@ const DataModule = (() => {
     let callsData = [];
     let isError = false;
 
-    async function loadData() {
+async function loadData() {
         showLoadingState();
         try {
             // Используем абсолютный путь от корня Vite
-fetch('./data/calls-sample.json')
+            const response = await fetch('./data/calls-sample.json');
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             
-            const parsed = await response.json();
+            const text = await response.text();
+            const parsed = JSON.parse(text);
             callsData = filterValidCalls(parsed);
             console.info(`✅ Loaded ${callsData.length} valid calls`);
         } catch (error) {
