@@ -66,7 +66,7 @@ async function loadData() {
     }
 
     return { loadData, getData: () => callsData, isError };
-})();
+})
 
 // ==========================================================================
 // UI State Helpers (ОДИН раз, чистая реализация)
@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         showErrorState('Ошибка отрисовки KPI: ' + error.message);
     }
 
-// 4. Рендерим воронку конверсии
+    // 4. Рендерим Фанул
     try {
         console.log('📈 Rendering Funnel...');
         renderFunnel(validData);
@@ -140,20 +140,30 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Не показываем ошибку пользователю, логируем в консоль
     }
 
-    // 5. Инициализируем модуль динамики звонков
+    // 5. Инициализируем Dynamics
     try {
-        console.log('📊 Initializing Dynamics...');
+        console.log('🤖 Initializing Dynamics...');
         initDynamics(validData);
         console.log('✅ Dynamics initialized successfully');
     } catch (error) {
         console.error('❌ Error in initDynamics:', error);
     }
 
-    // 6. Инициализируем модуль сравнения периодов
+    // 6. Генерируем и отображаем инсайты
     try {
-        console.log('📊 Initializing Comparison...');
+        console.log('📊 Генерация инсайтов...');
+        const insights = generateInsights(validData);
+        renderInsights(insights);
+        console.log('✅ Инсайты отрендерены успешно');
+    } catch (error) {
+        console.error('❌ Error in renderInsights:', error);
+    }
+
+    // 7. Инициализация модуля сравнения периодов
+    try {
+        console.log('📊 Инициализация сравнения периодов...');
         initDefaultComparison(validData);
-        console.log('�� Comparison initialized successfully');
+        console.log('✅ Сравнениеperiodов инициализировано successfully');
     } catch (error) {
         console.error('❌ Error in initDefaultComparison:', error);
     }
