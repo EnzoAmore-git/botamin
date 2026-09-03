@@ -6,6 +6,7 @@ import '../styles/main.css';
 import { renderKPI } from './kpi.js';
 import { renderFunnel } from './funnel.js';
 import { initDynamics } from './dynamics.js';
+import { renderComparison, initDefaultComparison } from './comparison.js';
 
 // ==========================================================================
 // Task 4: JSON Schema Validation
@@ -145,5 +146,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.log('✅ Dynamics initialized successfully');
     } catch (error) {
         console.error('❌ Error in initDynamics:', error);
+    }
+
+    // 6. Инициализируем модуль сравнения периодов
+    try {
+        console.log('📊 Initializing Comparison...');
+        initDefaultComparison(validData);
+        console.log('�� Comparison initialized successfully');
+    } catch (error) {
+        console.error('❌ Error in initDefaultComparison:', error);
     }
 });
