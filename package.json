@@ -1,0 +1,1 @@
+{"name":"botamin","version":"1.0.0","type":"module","scripts":{"dev":"vite","build":"vite build"},"dependencies":{"bootstrap":"^5.3.3","chart.js":"^4.4.0","d3":"^7.9.0"},"devDependencies":{"vite":"^5.2.8"}}

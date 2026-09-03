@@ -1,0 +1,448 @@
+/* ==========================================================================
+   Voice Bot Analytics Dashboard - Main Styles
+   ========================================================================== */
+
+/* CSS Variables */
+:root {
+    /* Colors */
+    --primary-color: #2c3e50;
+    --secondary-color: #34495e;
+    --success-color: #27ae60;
+    --warning-color: #f39c10;
+    --danger-color: #e74c3c;
+    --info-color: #3498db;
+    --light-gray: #f8f9fa;
+    --medium-gray: #e9ecef;
+    --dark-gray: #6c757d;
+    --white: #ffffff;
+    --black: #000000;
+
+    /* Typography */
+    --font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+    --font-size-sm: 0.875rem;
+    --font-size-md: 1rem;
+    --font-size-lg: 1.25rem;
+    --font-weight-normal: 400;
+    --font-weight-bold: 700;
+
+    /* Spacing */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 3rem;
+
+    /* Breakpoints */
+    --breakpoint-sm: 576px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 992px;
+    --breakpoint-xl: 1200px;
+}
+
+/* Base Styles */
+body {
+    font-family: var(--font-family);
+    background-color: var(--light-gray);
+    color: var(--primary-color);
+    margin: 0;
+    padding: 0;
+}
+
+/* Container */
+.container-fluid.custom-container {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+/* ==========================================================================
+   KPI Cards
+   ========================================================================== */
+.kpi-section {
+    padding: var(--spacing-lg) 0;
+}
+
+.kpi-grid {
+    display: grid;
+    gap: var(--spacing-sm);
+}
+
+@media (min-width: 1920px) {
+    .kpi-grid { grid-template-columns: repeat(5, 1fr); }
+}
+@media (min-width: 768px) and (max-width: 1200px) {
+    .kpi-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 767px) {
+    .kpi-grid { grid-template-columns: 1fr; }
+}
+
+.kpi-card {
+    background: var(--white);
+    border-radius: 8px;
+    padding: var(--spacing-md);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.kpi-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.kpi-card .value {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    color: var(--primary-color);
+    margin: var(--spacing-xs) 0 var(--spacing-sm);
+}
+
+.kpi-card .label {
+    color: var(--dark-gray);
+    font-size: var(--font-size-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.kpi-card .trend {
+    font-size: var(--font-size-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+}
+
+.kpi-card .trend.up {
+    color: var(--success-color);
+}
+
+.kpi-card .trend.down {
+    color: var(--danger-color);
+}
+
+.kpi-card .trend svg {
+    width: 12px;
+    height: 12px;
+}
+
+/* ==========================================================================
+   Funnel Visualization
+   ========================================================================== */
+.funnel-section {
+    padding: var(--spacing-lg) 0;
+    background: var(--white);
+    border-radius: 8px;
+    margin-bottom: var(--spacing-lg);
+}
+
+.funnel-container {
+    background: var(--white);
+    padding: var(--spacing-md);
+    border-radius: 6px;
+    min-height: 220px;
+}
+
+.funnel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-sm);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 1px solid var(--medium-gray);
+}
+
+.funnel-stages {
+    display: flex;
+    gap: var(--spacing-lg);
+    margin-top: var(--spacing-sm);
+}
+
+.funnel-stage {
+    flex: 1;
+    text-align: center;
+    padding: var(--spacing-sm) 0;
+}
+
+.funnel-stage .stage-name {
+    font-size: var(--font-size-sm);
+    color: var(--dark-gray);
+    margin-bottom: var(--spacing-xs);
+}
+
+.funnel-stage .stage-conversion {
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-bold);
+}
+
+.funnel-stage .stage-conversion.up {
+    color: var(--success-color);
+}
+
+.funnel-stage .stage-conversion.down {
+    color: var(--danger-color);
+}
+
+.funnel-progress-bar {
+    height: 8px;
+    border-radius: 4px;
+    background: var(--medium-gray);
+    overflow: hidden;
+    margin-top: var(--spacing-xs);
+}
+
+.funnel-progress-bar .progress-fill {
+    height: 100%;
+    background: var(--primary-color);
+    width: 0%;
+    transition: width 0.5s ease;
+}
+
+/* ==========================================================================
+   Charts Containers
+   ========================================================================== */
+.chart-section {
+    padding: var(--spacing-lg) 0;
+}
+
+.chart-container {
+    background: var(--white);
+    border-radius: 8px;
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    position: relative;
+}
+
+.chart-container .chart-title {
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-md);
+    color: var(--primary-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chart-container .chart-title .toggle {
+    font-size: var(--font-size-sm);
+    color: var(--dark-gray);
+    cursor: pointer;
+}
+
+.chart-container canvas {
+    width: 100% !important;
+    height: auto !important;
+    max-height: 400px;
+}
+
+/* ==========================================================================
+   Comparison Section
+   ========================================================================== */
+.comparison-section {
+    padding: var(--spacing-lg) 0;
+    background: var(--white);
+    border-radius: 8px;
+    margin-bottom: var(--spacing-lg);
+}
+
+.comparison-controls {
+    display: flex;
+    gap: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+    flex-wrap: wrap;
+}
+
+.comparison-control {
+    flex: 1;
+    min-width: 200px;
+}
+
+@media (max-width: 767px) {
+    .comparison-control {
+        min-width: 100%;
+    }
+}
+
+.comparison-result {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+    margin-top: var(--spacing-sm);
+}
+
+.comparison-result.up {
+    color: var(--success-color);
+}
+
+.comparison-result.down {
+    color: var(--danger-color);
+}
+
+/* ==========================================================================
+   Insights Section
+   ========================================================================== */
+.insights-section {
+    padding: var(--spacing-lg) 0;
+}
+
+.insight-card {
+    background: var(--white);
+    border-radius: 6px;
+    padding: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border-left: 3px solid var(--primary-color);
+}
+
+.insight-card.warning .insight-alert {
+    border-left-color: var(--warning-color);
+}
+
+.insight-card.danger .insight-alert {
+    border-left-color: var(--danger-color);
+}
+
+.insight-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--spacing-xs);
+}
+
+.insight-alert-icon {
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+    border-radius: 50%;
+}
+
+.insight-alert-icon.warning {
+    background: var(--warning-color);
+}
+
+.insight-alert-icon.danger {
+    background: var(--danger-color);
+}
+
+.insight-alert-content {
+    flex: 1;
+}
+
+.insight-alert-title {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-bold);
+    margin-bottom: var(--spacing-xs);
+}
+
+.insight-alert-text {
+    font-size: var(--font-size-sm);
+    color: var(--dark-gray);
+    line-height: 1.4;
+}
+
+/* ==========================================================================
+   Export Button
+   ========================================================================== */
+.export-section {
+    padding: var(--spacing-lg) 0;
+    background: var(--white);
+    border-radius: 8px;
+    margin-bottom: var(--spacing-lg);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.export-btn {
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    background: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: 4px;
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-bold);
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.export-btn:hover {
+    background: var(--secondary-color);
+}
+
+.export-btn:focus {
+    outline: 2px solid var(--info-color);
+    outline-offset: 2px;
+}
+
+/* ==========================================================================
+   Loading & Error States
+   ========================================================================== */
+.loading-overlay,
+.error-overlay,
+.no-data-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--light-gray);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--medium-gray);
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.no-data-text {
+    text-align: center;
+    color: var(--dark-gray);
+    padding: var(--spacing-lg);
+}
+
+/* ==========================================================================
+   Responsive Utilities
+   ========================================================================== */
+@media (max-width: 767px) {
+    .kpi-grid { grid-template-columns: 1fr !important; }
+    .funnel-stages { flex-direction: column; gap: var(--spacing-sm); }
+    .funnel-stage { margin-bottom: var(--spacing-sm); }
+    .comparison-controls { justify-content: center; }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .kpi-grid { grid-template-columns: repeat(3, 1fr) !important; }
+    .chart-container canvas { max-height: 300px; }
+}
+
+@media (min-width: 1025px) {
+    .kpi-grid { grid-template-columns: repeat(5, 1fr) !important; }
+    .chart-container canvas { max-height: 400px; }
+}
+
+/* Bootstrap overrides for this project */
+.btn:focus-visible {
+    outline: 2px solid var(--primary-color);
+    outline-offset: 2px;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(44, 62, 80, 0.25);
+}
+
+/* ==========================================================================
+   Print Styles
+   ========================================================================== */
+@media print {
+    .no-print { display: none !important; }
+    body { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+}
