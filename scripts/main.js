@@ -15,27 +15,18 @@ import { calculateInsights, renderInsights } from './insights.js';
 function isValidCallRecord(call) {
     const requiredFields = ['callId', 'timestamp', 'duration', 'stage', 'result', 'hour', 'dayOfWeek'];
     for (const field of requiredFields) {
-        if (call[field] === undefined || call[field] === null || call[field] === '') {
-            console.warn(`Invalid call record: missing "${field}"`, call);
-            return false;
-        }
+        if (call[field] === undefined || call[field] === null || call[field] === '') return false;
     }
     const validStages = ['greeting', 'offer', 'proposal', 'agreement'];
     const validResults = ['dropped_before_dialogue', 'dropped_during_dialogue', 'completed', 'meeting_scheduled'];
-    
     if (!validStages.includes(call.stage) || !validResults.includes(call.result)) return false;
     if (typeof call.duration !== 'number' || call.duration < 0) return false;
     if (call.hour < 0 || call.hour > 23 || call.dayOfWeek < 0 || call.dayOfWeek > 6) return false;
-    
     return true;
 }
 
 function filterValidCalls(calls) {
-    return calls.filter(call => {
-        const isValid = isValidCallRecord(call);
-        if (!isValid) console.debug('Filtered out:', call);
-        return isValid;
-    });
+    return calls.filter(call => isValidCallRecord(call));
 }
 
 // ==========================================================================
@@ -45,15 +36,12 @@ const DataModule = (() => {
     let callsData = [];
     let isError = false;
 
-async function loadData() {
+    async function loadData() {
         showLoadingState();
         try {
-            // Используем абсолютный путь от корня Vite
             const response = await fetch('./data/calls-sample.json');
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
-            
-            const text = await response.text();
-            const parsed = JSON.parse(text);
+            const parsed = await response.json();
             callsData = filterValidCalls(parsed);
             console.info(`✅ Loaded ${callsData.length} valid calls`);
         } catch (error) {
@@ -66,10 +54,10 @@ async function loadData() {
     }
 
     return { loadData, getData: () => callsData, isError };
-})
+})();
 
 // ==========================================================================
-// UI State Helpers (ОДИН раз, чистая реализация)
+// UI State Helpers
 // ==========================================================================
 function showLoadingState() {
     let overlay = document.getElementById('app-loading');
@@ -85,9 +73,7 @@ function showLoadingState() {
 
 function hideLoadingState() {
     const overlay = document.getElementById('app-loading');
-    if (overlay) {
-        overlay.style.display = 'none';
-    }
+    if (overlay) overlay.style.display = 'none';
 }
 
 function showErrorState(message) {
@@ -108,63 +94,62 @@ function showErrorState(message) {
 document.addEventListener('DOMContentLoaded', async () => {
     console.log('🚀 Dashboard initializing...');
     
-    // 1. Загружаем данные
     await DataModule.loadData();
-
-    // 2. Если ошибка, прерываем (она уже показана в showErrorState)
     if (DataModule.isError) return;
 
     const validData = DataModule.getData();
     if (validData.length === 0) {
-        showErrorState('Нет валидных данных для отображения');
+        showErrorState('Нет валидных данных');
         return;
     }
 
-    // 3. Рендерим KPI
+    // Task 7-8: KPI
     try {
         console.log('📊 Rendering KPI...');
         renderKPI(validData);
         console.log('✅ KPI rendered successfully');
     } catch (error) {
         console.error('❌ Error in renderKPI:', error);
-        showErrorState('Ошибка отрисовки KPI: ' + error.message);
     }
 
-    // 4. Рендерим Фанул
+    // Task 9-10: Funnel
     try {
-        console.log('📈 Rendering Funnel...');
+        console.log('📊 Rendering Funnel...');
         renderFunnel(validData);
         console.log('✅ Funnel rendered successfully');
     } catch (error) {
         console.error('❌ Error in renderFunnel:', error);
-        // Не показываем ошибку пользователю, логируем в консоль
     }
 
-    // 5. Инициализируем Dynamics
+    // Task 11-12: Dynamics
     try {
-        console.log('🤖 Initializing Dynamics...');
+        console.log('📊 Initializing Dynamics...');
         initDynamics(validData);
         console.log('✅ Dynamics initialized successfully');
     } catch (error) {
         console.error('❌ Error in initDynamics:', error);
     }
 
-    // 6. Генерируем и отображаем инсайты
+    // Task 13-14: Comparison
     try {
-        console.log('📊 Генерация инсайтов...');
-        const insights = generateInsights(validData);
-        renderInsights(insights);
-        console.log('✅ Инсайты отрендерены успешно');
+        console.log('📊 Initializing Comparison...');
+        renderComparison(validData);
+        initDefaultComparison(validData);
+        console.log('✅ Comparison initialized successfully');
     } catch (error) {
-        console.error('❌ Error in renderInsights:', error);
+        console.error('❌ Error in Comparison:', error);
     }
 
-    // 7. Инициализация модуля сравнения периодов
+    // Task 15-16: Insights
     try {
-        console.log('📊 Инициализация сравнения периодов...');
-        initDefaultComparison(validData);
-        console.log('✅ Сравнениеperiodов инициализировано successfully');
+        console.log('📊 Initializing Insights...');
+        const insights = calculateInsights(validData);
+        renderInsights(insights);
+        console.log('✅ Insights rendered successfully');
     } catch (error) {
-        console.error('❌ Error in initDefaultComparison:', error);
+        console.error('❌ Error in Insights:', error);
     }
+
+    window.callsData = validData;
+    console.info('🎉 Dashboard initialized with', validData.length, 'valid call records');
 });

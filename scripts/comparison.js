@@ -34,6 +34,11 @@ function isInPeriod(date, period) {
     return dateObj >= new Date(period.start) && dateObj <= new Date(period.end);
 }
 
+function isPeriod(call, period) {
+    if (!period || !period.start || !period.end) return false;
+    return isInPeriod(call.timestamp, period);
+}
+
 /**
  * Сравнивает два периода и возвращает метрики для каждого
  * @param {Array} calls - Массив валидных звонков
