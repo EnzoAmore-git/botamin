@@ -7,6 +7,7 @@ import { renderKPI } from './kpi.js';
 import { renderFunnel } from './funnel.js';
 import { initDynamics } from './dynamics.js';
 import { renderComparison, initDefaultComparison } from './comparison.js';
+import { calculateInsights, renderInsights } from './insights.js';
 
 // ==========================================================================
 // Task 4: JSON Schema Validation
