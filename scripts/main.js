@@ -47,7 +47,7 @@ const DataModule = (() => {
         showLoadingState();
         try {
             // Используем абсолютный путь от корня Vite
-            const response = await fetch('/data/calls-sample.json');
+            const response = await fetch('./data/calls-sample.json');
             if (!response.ok) throw new Error(`HTTP ${response.status}`);
             
             const parsed = await response.json();
