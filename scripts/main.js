@@ -54,7 +54,7 @@ const DataModule = (() => {
     }
 
     return { loadData, getData: () => callsData, isError };
-})
+})();
 
 // ==========================================================================
 // UI State Helpers
@@ -65,7 +65,7 @@ function showLoadingState() {
         overlay = document.createElement('div');
         overlay.id = 'app-loading';
         overlay.className = 'loading-overlay';
-        overlay.innerHTML = '<div class="spinner"></div><p>Loading data...</p>';
+        overlay.innerHTML = '<div class="spinner"></div><p>Загрузка данных...</p>';
         document.body.appendChild(overlay);
     }
     overlay.style.display = 'flex';
@@ -73,9 +73,7 @@ function showLoadingState() {
 
 function hideLoadingState() {
     const overlay = document.getElementById('app-loading');
-    if (overlay) {
-        overlay.style.display = 'none';
-    }
+    if (overlay) overlay.style.display = 'none';
 }
 
 function showErrorState(message) {
@@ -83,9 +81,9 @@ function showErrorState(message) {
     const container = document.getElementById('kpi-container') || document.body;
     container.innerHTML = `
         <div class="error-message" style="padding: 2rem; text-align: center; color: var(--danger-color);">
-            <h3>Error loading data</h3>
+            <h3>Ошибка загрузки данных</h3>
             <p>${message}</p>
-            <button onclick="location.reload()" style="margin-top: 1rem; padding: 0.5rem 1rem; cursor: pointer;">Retry</button>
+            <button onclick="location.reload()" style="margin-top: 1rem; padding: 0.5rem 1rem; cursor: pointer;">Повторить</button>
         </div>
     `;
 }
@@ -94,50 +92,46 @@ function showErrorState(message) {
 // Initialization
 // ==========================================================================
 document.addEventListener('DOMContentLoaded', async () => {
-    console.log('🚀 Dashboard initializing...');
+    console.log(' Dashboard initializing...');
     
-    // 1. Загружаем данные
     await DataModule.loadData();
-
-    // 2. Если ошибка, прерываем (она уже показана в showErrorState)
     if (DataModule.isError) return;
 
     const validData = DataModule.getData();
     if (validData.length === 0) {
-        showErrorState('No valid data to display');
+        showErrorState('Нет валидных данных');
         return;
     }
 
-    // 3. Рендерим KPI
+    // Task 7-8: KPI
     try {
         console.log('📊 Rendering KPI...');
         renderKPI(validData);
         console.log('✅ KPI rendered successfully');
     } catch (error) {
         console.error('❌ Error in renderKPI:', error);
-        showErrorState('Error rendering KPI: ' + error.message);
     }
 
-    // 4. Рендерим Фанул
+    // Task 9-10: Funnel
     try {
-        console.log('📈 Rendering Funnel...');
+        console.log('📊 Rendering Funnel...');
         renderFunnel(validData);
         console.log('✅ Funnel rendered successfully');
     } catch (error) {
-        console.error('❌ Error in renderFunnel:', error);
-        // Не показываем ошибку пользователю, логируем в консоль
+        console.error(' Error in renderFunnel:', error);
     }
 
-    // 5. Инициализируем Dynamics
+    // Task 11-12: Dynamics
     try {
-        console.log('🤖 Initializing Dynamics...');
+        console.log(' Initializing Dynamics...');
         initDynamics(validData);
         console.log('✅ Dynamics initialized successfully');
     } catch (error) {
         console.error('❌ Error in initDynamics:', error);
     }
 
-    // 6. Инициализация модуля сравнения периодов
+    // Task 13-14: Comparison - ВРЕМЕННО ОТКЛЮЧЕН
+    /*
     try {
         console.log('📊 Initializing Comparison...');
         initDefaultComparison(validData);
@@ -145,8 +139,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch (error) {
         console.error('❌ Error in Comparison:', error);
     }
+    */
 
-    // 7. Генерируем и отображаем инсайты
+    // Task 15-16: Insights
     try {
         console.log('📊 Initializing Insights...');
         const insights = calculateInsights(validData);
@@ -156,7 +151,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         console.error('❌ Error in Insights:', error);
     }
 
-    // 8. Сохраняем данные в глобальную переменную
     window.callsData = validData;
     console.info('🎉 Dashboard initialized with', validData.length, 'valid call records');
 });
