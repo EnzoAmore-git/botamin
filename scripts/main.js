@@ -155,12 +155,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     window.callsData = validData;
     console.info('🎉 Dashboard initialized with', validData.length, 'valid call records');
 
-    // Task 17-18: Export Module
-    const exportButton = createExportButton(validData);
-    const container = document.getElementById('export-button-container');
-    if (container) {
-        container.appendChild(exportButton);
-    } else {
-        console.warn('export-button-container not found, button not appended');
+    // Task 17-18: Export
+    try {
+        console.log('📊 Initializing Export...');
+        const exportContainer = document.getElementById('export-container');
+        if (exportContainer && window.callsData) {
+            const exportButton = createExportButton(window.callsData);
+            exportContainer.appendChild(exportButton);
+            console.log('✅ Export initialized successfully');
+        }
+    } catch (error) {
+        console.error('❌ Error in Export:', error);
     }
 });

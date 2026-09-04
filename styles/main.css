@@ -372,8 +372,29 @@ body {
 }
 
 /* ==========================================================================
-   Loading & Error States
+   Export Button
    ========================================================================== */
+.export-button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  transition: all 0.3s ease;
+}
+
+.export-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+}
+
+.export-button:active {
+  transform: translateY(0);
+}
 .loading-overlay,
 .error-overlay,
 .no-data-overlay {
