@@ -8,6 +8,7 @@ import { renderFunnel } from './funnel.js';
 import { initDynamics } from './dynamics.js';
 import { renderComparison, initDefaultComparison } from './comparison.js';
 import { calculateInsights, renderInsights } from './insights.js';
+import { createExportButton } from './export.js';
 
 // ==========================================================================
 // Task 4: JSON Schema Validation
@@ -131,7 +132,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Task 13-14: Comparison - ВРЕМЕННО ОТКЛЮЧЕН
-    /*
+  
     try {
         console.log('📊 Initializing Comparison...');
         initDefaultComparison(validData);
@@ -139,7 +140,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch (error) {
         console.error('❌ Error in Comparison:', error);
     }
-    */
+
 
     // Task 15-16: Insights
     try {
@@ -153,4 +154,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     window.callsData = validData;
     console.info('🎉 Dashboard initialized with', validData.length, 'valid call records');
+
+    // Task 17-18: Export Module
+    const exportButton = createExportButton(validData);
+    const container = document.getElementById('export-button-container');
+    if (container) {
+        container.appendChild(exportButton);
+    } else {
+        console.warn('export-button-container not found, button not appended');
+    }
 });
