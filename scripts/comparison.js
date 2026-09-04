@@ -30,6 +30,7 @@ function normalizeDayOfWeek(dow) {
  * @returns {boolean} - Попадает ли дата в период
  */
 function isInPeriod(date, period) {
+    if (!period || !period.start || !period.end) return false;
     const dateObj = date instanceof Date ? date : new Date(date);
     return dateObj >= new Date(period.start) && dateObj <= new Date(period.end);
 }
