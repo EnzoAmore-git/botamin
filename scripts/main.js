@@ -100,8 +100,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     const validData = DataModule.getData();
     if (validData.length === 0) {
         showErrorState('Нет валидных данных');
-        return;
-    }
+        return;}
+
+      window.callsData = validData;
+    console.info(' Dashboard initialized with', validData.length, 'valid call records');
+)
 
     // Task 7-8: KPI
     try {
@@ -131,14 +134,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Task 13-14: Comparison
-    try {
-        console.log('📊 Initializing Comparison...');
-        renderComparison(validData);
-        initDefaultComparison(validData);
-        console.log('✅ Comparison initialized successfully');
-    } catch (error) {
-        console.error('❌ Error in Comparison:', error);
-    }
+try {
+  console.log('Initializing Comparison...');
+  initDefaultComparison(validData);
+  console.log('✅ Comparison initialized successfully');
+} catch (error) {
+  console.error('❌ Error in Comparison:', error);
+}
 
     // Task 15-16: Insights
     try {
