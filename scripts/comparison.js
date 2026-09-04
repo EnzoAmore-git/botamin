@@ -48,6 +48,12 @@ function isPeriod(call, period) {
  * @returns {Object} - Результат сравнения со всеми метриками
  */
 function comparePeriods(calls, period1, period2) {
+    // Проверка на undefined периоды
+    if (!period1 || !period2 || !period1.start || !period2.start) {
+        console.error('Invalid periods in comparePeriods:', { period1, period2 });
+        return { period1: null, period2: null, changes: {} };
+    }
+
     // Фильтруем вызовы для каждого периода
     const period1Calls = calls.filter(call => isInPeriod(call.timestamp, period1));
     const period2Calls = calls.filter(call => isInPeriod(call.timestamp, period2));
@@ -282,9 +288,22 @@ function renderComparison(calls, period1, period2, containerId = '#comparison-co
  * @param {string} containerId - ID контейнера
  */
 function initDefaultComparison(calls, containerId = '#comparison-container') {
-    // Пример периодов: Пн-Ср vs Чт-Пт
-    const defaultPeriod1 = { start: '2026-01-01', end: '2026-01-03' }; // Пн-Ср
-    const defaultPeriod2 = { start: '2026-01-04', end: '2026-01-06' }; // Чт-Сб
+    // Получить реальные даты из данных
+    const timestamps = calls.map(c => new Date(c.timestamp));
+    const minDate = new Date(Math.min(...timestamps));
+    const maxDate = new Date(Math.max(...timestamps));
+
+    // Разделить на 2 периода: первая половина vs вторая
+    const midDate = new Date(minDate.getTime() + (maxDate - minDate) / 2);
+
+    const defaultPeriod1 = {
+        start: minDate.toISOString(),
+        end: midDate.toISOString()
+    };
+    const defaultPeriod2 = {
+        start: midDate.toISOString(),
+        end: maxDate.toISOString()
+    };
 
     renderComparison(calls, defaultPeriod1, defaultPeriod2, containerId);
 }
